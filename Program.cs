@@ -34,12 +34,12 @@ namespace Birthday
     }
     class PeopleDatabase
     {
-        public Person[] people;
+        public List<Person> people;
         public int peopleSize;
         public PeopleDatabase(string file)
         {
             peopleSize = 0;
-            people = new Person[0];
+            people = new List<Person>();
             try
             {
                 // Open the text file using a stream reader.
@@ -54,7 +54,7 @@ namespace Birthday
                             string[] parts = line.Split(';');
                             string[] fullName = parts[0].Split(' ');
                             Person p = new Person(fullName[0], fullName[1], int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
-                            // addPerson(p);
+                            people.Add(p);
                             Console.WriteLine(fullName[0]);
                             Console.WriteLine(fullName[1]);
                             Console.WriteLine(parts[1]);
