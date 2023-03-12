@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-namespace Birthday
+﻿namespace Birthday
 {
 
     public partial class Program
@@ -8,8 +6,7 @@ namespace Birthday
         static void Main(string[] args)
         {
             PeopleDatabase pdb = new PeopleDatabase("peopleDB.txt");
-
-            Console.WriteLine("Hello, World!");
+            pdb.printAll();
         }
     }
     class Person
@@ -29,16 +26,14 @@ namespace Birthday
         }
         public void print()
         {
-            Console.WriteLine(name + surname);
+            Console.WriteLine(name + " " + surname + ": " + year + "/" + month + "/" + day);
         }
     }
     class PeopleDatabase
     {
         public List<Person> people;
-        public int peopleSize;
         public PeopleDatabase(string file)
         {
-            peopleSize = 0;
             people = new List<Person>();
             try
             {
@@ -50,16 +45,11 @@ namespace Birthday
                         string? line = sr.ReadLine();
                         if (line != null)
                         {
-                            Console.WriteLine(line);
+                            // Console.WriteLine(line);
                             string[] parts = line.Split(';');
                             string[] fullName = parts[0].Split(' ');
                             Person p = new Person(fullName[0], fullName[1], int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
                             people.Add(p);
-                            Console.WriteLine(fullName[0]);
-                            Console.WriteLine(fullName[1]);
-                            Console.WriteLine(parts[1]);
-                            Console.WriteLine(parts[2]);
-                            Console.WriteLine(parts[3]);
                         }
                     }
                 }
@@ -71,10 +61,12 @@ namespace Birthday
             }
 
         }
-        public void addPerson(Person person)
+        public void printAll()
         {
-            people[peopleSize] = person;
-            peopleSize++;
+            foreach (Person person in people)
+            {
+                person.print();
+            }
         }
     }
 }
