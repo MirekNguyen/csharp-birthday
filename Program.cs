@@ -13,20 +13,16 @@
     {
         public string name;
         public string surname;
-        public int year;
-        public int month;
-        public int day;
-        public Person(string name, string surname, int year, int month, int day)
+        public DateTime birthday;
+        public Person(string name, string surname, DateTime birthday)
         {
             this.name = name;
             this.surname = surname;
-            this.year = year;
-            this.month = month;
-            this.day = day;
+            this.birthday = birthday;
         }
         public void print()
         {
-            Console.WriteLine(name + " " + surname + ": " + year + "/" + month + "/" + day);
+            Console.WriteLine(name + " " + surname + ": " + birthday.ToString("yyyy-MM-dd"));
         }
     }
     class PeopleDatabase
@@ -48,7 +44,8 @@
                             // Console.WriteLine(line);
                             string[] parts = line.Split(';');
                             string[] fullName = parts[0].Split(' ');
-                            Person p = new Person(fullName[0], fullName[1], int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
+                            DateTime birthday = new DateTime(int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
+                            Person p = new Person(fullName[0], fullName[1], birthday);
                             people.Add(p);
                         }
                     }
