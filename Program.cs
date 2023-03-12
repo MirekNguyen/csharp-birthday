@@ -6,12 +6,18 @@
         static void Main(string[] args)
         {
             PeopleDatabase pdb = new PeopleDatabase("peopleDB.txt");
+            // pdb.printAll();
+            // Console.WriteLine();
+            // pdb.sort();
             pdb.printAll();
-            pdb.people[0].age();
             Console.WriteLine();
-            pdb.sort();
-            pdb.printAll();
-            Console.WriteLine(pdb.search("Mark Davis").age());
+            string queryName = "Mark Davis";
+            Console.WriteLine($"Age of {queryName}: {pdb.search(queryName).age()}");
+            Console.WriteLine($"Youngest: {pdb.youngest()}");
+            Console.WriteLine($"Oldest: {pdb.oldest()}");
+            Console.WriteLine();
+            Console.WriteLine("Upcoming birthdays: ");
+            pdb.upcomingBirthdays();
         }
     }
     class Person
@@ -27,7 +33,6 @@
         }
         public void print()
         {
-            Console.WriteLine($"{name} {surname}: " + birthday.ToString("yyyy-MM-dd"));
         }
         public int age()
         {
@@ -38,6 +43,10 @@
                 age--;
             }
             return age;
+        }
+        public override string ToString()
+        {
+            return $"{name} {surname}: " + birthday.ToString("yyyy-MM-dd");
         }
     }
     class PeopleDatabase
@@ -77,7 +86,7 @@
         {
             foreach (Person person in people)
             {
-                person.print();
+                Console.WriteLine(person);
             }
         }
         public void sort()
@@ -87,7 +96,24 @@
         }
         public Person search(string searchQuery)
         {
-            return people.FirstOrDefault(p => (p.name + " " + p.surname).Equals(searchQuery, StringComparison.OrdinalIgnoreCase));
+            return people.FirstOrDefault(p => (p.name + " " + p.surname).Equals(searchQuery, StringComparison.OrdinalIgnoreCase)) ?? throw new Exception("Person not found");
+        }
+        public Person youngest()
+        {
+            return people.OrderByDescending(p => p.birthday).First();
+        }
+        public Person oldest()
+        {
+            return people.OrderBy(p => p.birthday).First();
+        }
+        public void upcomingBirthdays()
+        {
+            List<Person> upcomingBirthdays = people.Where(p => p.birthday.Month == DateTime.Today.Month && p.birthday.Day >= DateTime.Today.Day).ToList();
+            upcomingBirthdays = upcomingBirthdays.OrderBy(p => p.birthday.Day).ToList();
+            foreach (Person p in upcomingBirthdays)
+            {
+                Console.WriteLine(p);
+            }
         }
     }
 }
