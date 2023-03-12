@@ -26,7 +26,15 @@ namespace Birthday
         }
         public override string ToString()
         {
-            return $"{Name} {Surname}: " + Birthday.ToString("yyyy-MM-dd");
+            return $"{Name} {Surname} | " + Birthday.ToString("yyyy-MM-dd") + $" | age: {age()}";
+        }
+        public static void printList(List<Person> people)
+        {
+            foreach (var person in people)
+            {
+                Console.WriteLine(person);
+            }
+
         }
     }
 }

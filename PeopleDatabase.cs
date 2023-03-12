@@ -45,9 +45,17 @@ namespace Birthday
 
             people = people.OrderBy(p => p.Birthday).ToList();
         }
-        public Person search(string searchQuery)
+        public Person? search(string searchQuery)
         {
-            return people.FirstOrDefault(p => (p.Name + " " + p.Surname).Equals(searchQuery, StringComparison.OrdinalIgnoreCase)) ?? throw new Exception("Person not found");
+            return people.FirstOrDefault(p => (p.Name + " " + p.Surname).Equals(searchQuery, StringComparison.OrdinalIgnoreCase)) ?? null;
+        }
+        public List<Person> searchByName(string searchQuery)
+        {
+            return people.Where(p => p.Name.Equals(searchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        public List<Person> searchBySurname(string searchQuery)
+        {
+            return people.Where(p => p.Surname.Equals(searchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
         }
         public Person youngest()
         {
@@ -57,14 +65,11 @@ namespace Birthday
         {
             return people.OrderBy(p => p.Birthday).First();
         }
-        public void upcomingBirthdays()
+        public List<Person> upcomingBirthdays()
         {
             List<Person> upcomingBirthdays = people.Where(p => p.Birthday.Month == DateTime.Today.Month && p.Birthday.Day >= DateTime.Today.Day).ToList();
             upcomingBirthdays = upcomingBirthdays.OrderBy(p => p.Birthday.Day).ToList();
-            foreach (Person p in upcomingBirthdays)
-            {
-                Console.WriteLine(p);
-            }
+            return upcomingBirthdays;
         }
     }
 
