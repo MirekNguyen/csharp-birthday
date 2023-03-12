@@ -7,6 +7,11 @@
         {
             PeopleDatabase pdb = new PeopleDatabase("peopleDB.txt");
             pdb.printAll();
+            pdb.people[0].age();
+            Console.WriteLine();
+            pdb.sort();
+            pdb.printAll();
+            Console.WriteLine(pdb.search("Mark Davis").age());
         }
     }
     class Person
@@ -22,7 +27,17 @@
         }
         public void print()
         {
-            Console.WriteLine(name + " " + surname + ": " + birthday.ToString("yyyy-MM-dd"));
+            Console.WriteLine($"{name} {surname}: " + birthday.ToString("yyyy-MM-dd"));
+        }
+        public int age()
+        {
+            DateTime today = DateTime.Today;
+            int age = today.Year - birthday.Year;
+            if (birthday > today.AddYears(-age))
+            {
+                age--;
+            }
+            return age;
         }
     }
     class PeopleDatabase
@@ -64,6 +79,15 @@
             {
                 person.print();
             }
+        }
+        public void sort()
+        {
+
+            people = people.OrderBy(p => p.birthday).ToList();
+        }
+        public Person search(string searchQuery)
+        {
+            return people.FirstOrDefault(p => (p.name + " " + p.surname).Equals(searchQuery, StringComparison.OrdinalIgnoreCase));
         }
     }
 }
