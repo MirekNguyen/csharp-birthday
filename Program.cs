@@ -4,29 +4,11 @@
     {
         static void Main(string[] args)
         {
-            bool run = true;
             PeopleDatabase pdb = new PeopleDatabase("peopleDB.txt");
-            // pdb.printAll();
-            // Console.WriteLine();
-            // pdb.sort();
+            bool run = true;
             while (run)
             {
-                Console.WriteLine("Birthday");
-                Console.WriteLine("Options: ");
-                Console.WriteLine("'a': Print all");
-                Console.WriteLine("'b': Search by name and surname");
-                Console.WriteLine("'c': Search by name");
-                Console.WriteLine("'d': Search by surname");
-                Console.WriteLine("'e': Youngest");
-                Console.WriteLine("'f': Oldest");
-                Console.WriteLine("'g': Upcoming birthdays in this month");
-                Console.WriteLine("'q': quit");
-                char c;
-                c = char.ToLower(Console.ReadKey().KeyChar);
-                Console.WriteLine();
-                Console.WriteLine();
-                string queryName;
-                switch (c)
+                switch (options())
                 {
                     case 'a':
                         pdb.printAll();
@@ -34,22 +16,19 @@
                     case 'b':
                         Console.WriteLine("Search by name and surname (case insensitive)");
                         Console.Write("Insert query: e.g. \"Mark Davis\": ");
-                        queryName = Console.ReadLine() ?? "";
-                        Person? p = pdb.search(queryName);
-                        Console.WriteLine(p != null ? $"{p}" : "Person not found");
+                        List<Person> p = pdb.search(Console.ReadLine() ?? "");
+                        Person.printList(p);
                         break;
                     case 'c':
                         Console.WriteLine("Search by name (case insensitive)");
                         Console.Write("Insert query: e.g. \"Mark\": ");
-                        queryName = Console.ReadLine() ?? "";
-                        List<Person> plist = pdb.searchByName(queryName);
+                        List<Person> plist = pdb.searchByName(Console.ReadLine() ?? "");
                         Person.printList(plist);
                         break;
                     case 'd':
                         Console.WriteLine("Search by surname (case insensitive)");
                         Console.Write("Insert query: e.g. \"Davis\": ");
-                        queryName = Console.ReadLine() ?? "";
-                        List<Person> plistSurname = pdb.searchBySurname(queryName);
+                        List<Person> plistSurname = pdb.searchBySurname(Console.ReadLine() ?? "");
                         Person.printList(plistSurname);
                         break;
                     case 'e':
@@ -63,6 +42,24 @@
                         Console.WriteLine();
                         Person.printList(pdb.upcomingBirthdays());
                         break;
+                    case 'h':
+                        Console.WriteLine("Add person");
+                        Console.WriteLine("Syntax e.g.: John Smith; 1987; 3; 25");
+                        string input = Console.ReadLine() ?? "";
+                        Person? newPerson = PeopleDatabase.stringToPerson(input);
+                        if (newPerson != null)
+                        {
+                            Console.WriteLine("Success, added 1 person");
+                            pdb.addPerson(newPerson);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid string format");
+                        }
+                        break;
+                    case 'i':
+                        // write - todo
+                        break;
                     case 'q':
                         run = false;
                         break;
@@ -75,6 +72,25 @@
                 Console.ReadLine();
                 Console.Clear();
             }
+        }
+        public static char options()
+        {
+            Console.WriteLine("Birthday");
+            Console.WriteLine("Options: ");
+            Console.WriteLine("'a': Print all");
+            Console.WriteLine("'b': Search by name and surname");
+            Console.WriteLine("'c': Search by name");
+            Console.WriteLine("'d': Search by surname");
+            Console.WriteLine("'e': Youngest");
+            Console.WriteLine("'f': Oldest");
+            Console.WriteLine("'g': Upcoming birthdays in this month");
+            Console.WriteLine("'h': Add person");
+            Console.WriteLine("'i': Write to file");
+            Console.WriteLine("'q': quit");
+            char selectedOption = char.ToLower(Console.ReadKey().KeyChar);
+            Console.WriteLine();
+            Console.WriteLine();
+            return selectedOption;
         }
     }
 }

@@ -11,9 +11,6 @@ namespace Birthday
             Surname = surname;
             Birthday = birthday;
         }
-        public void print()
-        {
-        }
         public int age()
         {
             DateTime today = DateTime.Today;
