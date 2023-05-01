@@ -5,6 +5,7 @@
         static void Main(string[] args)
         {
             PeopleDatabase pdb = new PeopleDatabase("peopleDB.txt");
+            pdb.sortByName();
             bool run = true;
             while (run)
             {
@@ -58,7 +59,33 @@
                         }
                         break;
                     case 'i':
-                        // write - todo
+                        Console.WriteLine("Relative path e.g.: sample.txt");
+                        Console.WriteLine("Absolute path Linux/Mac e.g.: /home/user_name/Desktop/sample.txt");
+                        Console.WriteLine("Absolute path Windows e.g.: C:\\Users\\user_name\\Desktop\\sample.txt");
+                        Console.WriteLine();
+                        Console.Write("Please enter a file path: ");
+                        string path = Console.ReadLine() ?? "";
+                        if (path == "")
+                        {
+                            break;
+                        }
+                        try {
+                            System.IO.File.WriteAllText(path, "Hello, world!");
+                        }
+                        catch (Exception e) {
+                            Console.WriteLine("Error while writing to file: " + e.Message);
+                        }
+                        if (System.IO.File.Exists(path))
+                        {
+                            string fullPath = System.IO.Path.GetFullPath(path);
+                            Console.WriteLine($"File was written to {fullPath}");
+                        }
+                        break;
+                    case 'j':
+                        pdb.sortByName();
+                        break;
+                    case 'k':
+                        pdb.sortByBirthday();
                         break;
                     case 'q':
                         run = false;
@@ -86,6 +113,8 @@
             Console.WriteLine("'g': Upcoming birthdays in this month");
             Console.WriteLine("'h': Add person");
             Console.WriteLine("'i': Write to file");
+            Console.WriteLine("'j': Sort by name");
+            Console.WriteLine("'k': Sort by birthday");
             Console.WriteLine("'q': quit");
             char selectedOption = char.ToLower(Console.ReadKey().KeyChar);
             Console.WriteLine();

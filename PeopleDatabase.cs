@@ -40,10 +40,12 @@ namespace Birthday
                 Console.WriteLine(person);
             }
         }
-        public void sort()
+        public void sortByBirthday()
         {
-
             people = people.OrderBy(p => p.Birthday).ToList();
+        }
+        public void sortByName() {
+            people = people.OrderBy(p => p.Name).ToList();
         }
         public List<Person> search(string searchQuery)
         {
