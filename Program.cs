@@ -5,7 +5,6 @@
         static void Main(string[] args)
         {
             PeopleDatabase pdb = new PeopleDatabase("peopleDB.txt");
-            pdb.sortByName();
             bool run = true;
             while (run)
             {
@@ -70,7 +69,14 @@
                             break;
                         }
                         try {
-                            System.IO.File.WriteAllText(path, "Hello, world!");
+                            using (StreamWriter writer = new StreamWriter(path))
+                            {
+                                foreach (Person person in pdb.people)
+                                {
+                                    writer.WriteLine($"{person.Name} {person.Surname}; {person.Birthday.Year}; {person.Birthday.Month}; {person.Birthday.Day}");
+                                }
+                            }
+                            // System.IO.File.WriteAllText(path, "Hello, world!");
                         }
                         catch (Exception e) {
                             Console.WriteLine("Error while writing to file: " + e.Message);
@@ -86,6 +92,22 @@
                         break;
                     case 'k':
                         pdb.sortByBirthday();
+                        break;
+                    case 'l':
+                        string dbPath = Console.ReadLine() ?? "";
+                        if (dbPath == "") 
+                        {
+                            break;
+                        }
+                        if (System.IO.File.Exists(dbPath))
+                        {
+                            PeopleDatabase pdbNew = new PeopleDatabase(dbPath);
+                            pdb = pdbNew;
+                        }
+                        else 
+                        {
+                            Console.WriteLine($"Invalid path: {dbPath}");
+                        }
                         break;
                     case 'q':
                         run = false;
