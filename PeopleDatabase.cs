@@ -19,9 +19,10 @@ namespace Birthday
                         string? line = sr.ReadLine();
                         if (line != null)
                         {
-                            // Console.WriteLine(line);
+                            // split string to parts
                             string[] parts = line.Split(';');
                             string[] fullName = parts[0].Split(' ');
+                            // create new person using parts
                             DateTime birthday = new DateTime(int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
                             Person p = new Person(fullName[0], fullName[1], birthday);
                             people.Add(p);
@@ -57,7 +58,6 @@ namespace Birthday
         }
         public List<Person> search(string searchQuery)
         {
-            // return people.FirstOrDefault(p => (p.Name + " " + p.Surname).Equals(searchQuery, StringComparison.OrdinalIgnoreCase)) ?? null;
             return people.Where(p => (p.Name + " " + p.Surname).Equals(searchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
         }
         public List<Person> searchByName(string searchQuery)
@@ -95,16 +95,22 @@ namespace Birthday
         public static Person? stringToPerson(string input)
         {
             string[] parts = input.Split(';');
+            // parts[0] - name surname
+            // parts[1] - year
+            // parts[2] - month
+            // parts[3] - day
             if (parts.Length != 4)
             {
                 return null;
             }
-            string[] fullName = parts[0].Split(' ');
+            string[] fullName = parts[0].Split(' '); // separate name and surname into an array
             int year, month, day;
             if (fullName.Length == 2 && !(string.IsNullOrWhiteSpace(fullName[0]) || string.IsNullOrWhiteSpace(fullName[1])))
             {
+                // convert date to integer
                 if (int.TryParse(parts[1], out year) && int.TryParse(parts[2], out month) && int.TryParse(parts[3], out day))
                 {
+                    // check for validity of birthday
                     if (DateTime.TryParse($"{year}-{month}-{day}", out DateTime date)) 
                     {
                         DateTime birthday = new DateTime(year, month, day);

@@ -38,6 +38,7 @@ namespace Birthday
             Console.WriteLine("Syntax e.g.: John Smith; 1987; 3; 25");
             string input = Console.ReadLine() ?? "";
             Person? newPerson = PeopleDatabase.stringToPerson(input);
+            // if stringToPerson method success
             if (newPerson != null)
             {
                 Console.WriteLine("Success, added 1 person");
@@ -59,6 +60,7 @@ namespace Birthday
             {
                 return;
             }
+            // iterating through each person and trying to write it to a file
             try {
                 using (StreamWriter writer = new StreamWriter(path))
                 {
@@ -67,7 +69,6 @@ namespace Birthday
                         writer.WriteLine($"{person.Name} {person.Surname}; {person.Birthday.Year}; {person.Birthday.Month}; {person.Birthday.Day}");
                     }
                 }
-                // System.IO.File.WriteAllText(path, "Hello, world!");
             }
             catch (Exception e) {
                 Console.WriteLine("Error while writing to file: " + e.Message);
@@ -98,6 +99,7 @@ namespace Birthday
             {
                 return;
             }
+            // check if path exists
             if (System.IO.File.Exists(dbPath))
             {
                 string fullPath = System.IO.Path.GetFullPath(dbPath);
