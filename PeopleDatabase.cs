@@ -3,8 +3,11 @@ namespace Birthday
     class PeopleDatabase
     {
         public List<Person> people;
-        public PeopleDatabase(string file)
+        public PeopleDatabase()
         {
+            people = new List<Person>();
+        }
+        public void loadDatabase(string file) {
             people = new List<Person>();
             try
             {
@@ -31,7 +34,6 @@ namespace Birthday
                 Console.WriteLine("The file could not be read:");
                 Console.WriteLine(e.Message);
             }
-
         }
         public void printAll()
         {
@@ -42,10 +44,16 @@ namespace Birthday
         }
         public void sortByBirthday()
         {
+            Console.WriteLine("Sorted by birthday");
             people = people.OrderBy(p => p.Birthday).ToList();
         }
         public void sortByName() {
+            Console.WriteLine("Sorted by name");
             people = people.OrderBy(p => p.Name).ToList();
+        }
+        public void sortBySurname() {
+            Console.WriteLine("Sorted by surname");
+            people = people.OrderBy(p => p.Surname).ToList();
         }
         public List<Person> search(string searchQuery)
         {
@@ -91,20 +99,18 @@ namespace Birthday
             {
                 return null;
             }
-            Console.WriteLine(parts[0]);
-            Console.WriteLine(parts[1]);
-            Console.WriteLine(parts[2]);
-            Console.WriteLine(parts[3]);
             string[] fullName = parts[0].Split(' ');
-            // DateTime birthday = new DateTime(int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
             int year, month, day;
             if (fullName.Length == 2 && !(string.IsNullOrWhiteSpace(fullName[0]) || string.IsNullOrWhiteSpace(fullName[1])))
             {
                 if (int.TryParse(parts[1], out year) && int.TryParse(parts[2], out month) && int.TryParse(parts[3], out day))
                 {
-                    DateTime birthday = new DateTime(year, month, day);
-                    Person p = new Person(fullName[0], fullName[1], birthday);
-                    return p;
+                    if (DateTime.TryParse($"{year}-{month}-{day}", out DateTime date)) 
+                    {
+                        DateTime birthday = new DateTime(year, month, day);
+                        Person p = new Person(fullName[0], fullName[1], birthday);
+                        return p;
+                    }
                 }
             }
             return null;
